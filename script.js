@@ -2,21 +2,28 @@
 
 // Select Dom Elements
 const btnRoll = document.querySelector('.btn--roll');
-let score0 = document.querySelector('#score--0');
-let score1 = document.querySelector('#score--1');
+const btnHold = document.querySelector('.btn--hold');
 const player1 = document.querySelector('.player--0');
 const player2 = document.querySelector('.player--1');
 const diceImg = document.querySelector('.dice');
-const scorePlayer1 = document.querySelector('#current--0');
-const scorePlayer2 = document.querySelector('#current--1');
+
+const currentScore1 = document.querySelector('#current--0');
+const currentScore2 = document.querySelector('#current--1');
+
+let scorePlayer1 = document.querySelector('#score--0');
+let scorePlayer2 = document.querySelector('#score--1');
+let activePlayer = document.querySelector('.player--active');
+let score0 = document.querySelector('#score--0');
+let score1 = document.querySelector('#score--1');
 
 // Initial Game Conditions
-score0.textContent = 0;
-score1.textContent = 0;
+scorePlayer1.textContent = 0;
+scorePlayer2.textContent = 0;
 diceImg.classList.add('hidden');
 
-let currentScore1 = 0;
-let currentScore2 = 0;
+const scores = [0, 0];
+let currentScore = 0;
+let activePlayerScore = 0;
 
 
 // Add Event Listeners
@@ -31,23 +38,15 @@ btnRoll.addEventListener('click', () => {
   //Check if dice roll is 1
   if (diceNum !== 1) {
     // Add dice to the current score
-    if (player1.classList.contains('player--active')) {
-      currentScore1 += diceNum;
-      scorePlayer1.textContent = currentScore1;
-    } else if (player2.classList.contains('player--active')) {
-      currentScore2 += diceNum;
-      scorePlayer2.textContent = currentScore2;
-    }
+    currentScore += diceNum;
+    document.querySelector(`#current--${activePlayerScore}`).textContent = currentScore;
 
   } else {
-    if (player1.classList.contains('player--active')) {
-      player1.classList.remove('player--active');
-      player2.classList.add('player--active');
-    } else if (player2.classList.contains('player--active')) {
-      player2.classList.remove('player--active');
-      player1.classList.add('player--active');
-    }
+    document.querySelector(`#current--${activePlayerScore}`).textContent = 0;
+    currentScore = 0;
+    activePlayerScore = activePlayerScore === 0 ? 1 : 0;
+    player1.classList.toggle('player--active');
+    player2.classList.toggle('player--active');
   }
-
 });
 
